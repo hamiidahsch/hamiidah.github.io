@@ -3,518 +3,582 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Creative Developer</title>
+    <title>Portfolio | Hamiidah</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* TEMA UNGU (DEFAULT) */
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #a78bfa;
+            --secondary: #ec4899;
+            --dark: #0f0f1e;
+            --darker: #0a0a14;
+            --section-bg: #0f0f1e;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #8b5cf6, #ec4899);
+            --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        /* TEMA BIRU - akan aktif jika body memiliki class .theme-blue */
+        body.theme-blue {
+            --primary: #1EA7FF;
+            --primary-dark: #0E8FD9;
+            --primary-light: #5BC0FF;
+            --secondary: #8B3DFF;
+            --dark: #050816;
+            --darker: #02040C;
+            --section-bg: #0A1028;
+            --card-bg: #111A35;
+            --light: #FFFFFF;
+            --gray: #A8B3CF;
+            --gray-light: #B9C4E5;
+            --gradient-1: linear-gradient(135deg, #1EA7FF, #8B3DFF);
+            --shadow-glow: 0 0 20px rgba(30, 167, 255, 0.4);
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Loading */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s;
+        }
+        .loader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loader-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(139,92,246,0.2);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            width: 40%;
+            height: 100%;
+            background: var(--gradient-1);
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { left: -40%; }
+            100% { left: 100%; }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 0;
+            z-index: 1000;
+            background: rgba(15,15,30,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(139,92,246,0.2);
+            transition: all 0.3s;
+        }
+        body.theme-blue .navbar {
+            background: rgba(5,8,22,0.95);
+            border-bottom-color: rgba(30,167,255,0.3);
+        }
+        .navbar.scrolled {
+            padding: 1rem 0;
+            background: rgba(10,10,20,0.98);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo-text {
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100%{opacity:1;transform:scale(1);}
+            50%{opacity:0.5;transform:scale(1.2);}
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--primary);
+            border-radius: 40px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--light);
+            font-size: 0.9rem;
+            transition: 0.3s;
+            margin-left: 1rem;
+        }
+        .theme-toggle:hover {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 6rem 0 4rem;
+            background: var(--dark);
+        }
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        .gradient-text {
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero-desc {
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+        }
+        .btn-primary, .btn-secondary {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+        }
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--light);
+        }
+        .btn-secondary:hover {
+            background: var(--primary);
+        }
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero-avatar {
+            position: relative;
+            width: 350px;
+            height: 350px;
+        }
+        .avatar-glow {
+            position: absolute;
+            inset: -10px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            filter: blur(20px);
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+        .hero-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            border: 3px solid var(--primary);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: var(--gray-light);
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%,100%{transform:translateX(-50%) translateY(0);}
+            50%{transform:translateX(-50%) translateY(10px);}
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 0;
+        }
+        section:nth-child(even) {
+            background: var(--section-bg);
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-subtitle {
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            margin: 1rem 0;
+        }
+        .section-line {
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-1);
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .about-grid, .Project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .about-card, .Project-item, .contact-card, .contact-form {
+            background: var(--card-bg);
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: 0.3s;
+        }
+        body.theme-blue .about-card,
+        body.theme-blue .Project-item,
+        body.theme-blue .contact-card,
+        body.theme-blue .contact-form {
+            border-color: rgba(30,167,255,0.2);
+        }
+        .about-card:hover, .Project-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+        .about-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .about-icon i {
+            font-size: 2rem;
+        }
+        .Project-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+        .Project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .Project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .Project-item:hover .Project-overlay {
+            opacity: 1;
+        }
+        .Project-link {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .skill-bar {
+            height: 8px;
+            background: rgba(139,92,246,0.2);
+            border-radius: 10px;
+            margin-top: 5px;
+        }
+        .skill-progress {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            width: 0%;
+        }
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 10px;
+            color: var(--light);
+        }
+        .footer {
+            border-top: 1px solid var(--primary);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 2rem;
+        }
+        @media (max-width: 968px) {
+            .hero .container { grid-template-columns: 1fr; text-align: center; }
+            .nav-links { display: none; }
+            .hero-avatar { width: 280px; height: 280px; margin: 0 auto; }
+            .contact-container { grid-template-columns: 1fr; }
+        }
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.6s;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-dot"></div>
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+<div class="loader" id="loader"><div class="loader-content"><div class="loader-text">LOADING</div><div class="loader-bar"></div></div></div>
 
-    <!-- Loading Screen -->
-    <div class="loader" id="loader">
-        <div class="loader-content">
-            <div class="loader-text">LOADING</div>
-            <div class="loader-bar"></div>
-        </div>
+<nav class="navbar" id="navbar">
+    <div class="container nav-container">
+        <div class="logo"><span class="logo-text">🌐 HAMIIDAH</span><span class="logo-dot"></span></div>
+        <ul class="nav-links">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#Project" class="nav-link">Project</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-palette"></i>
+            <span class="toggle-text">Mode Biru</span>
+        </button>
     </div>
+</nav>
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <span class="logo-text">🌐HAMIIDAH </span>
-                <span class="logo-dot"></span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#Project" class="nav-link">Project</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-                <button class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-palette"></i>
-                    <span class="toggle-text">Mode Biru</span>
-                </button>
-            </ul>
+<section id="home" class="hero">
+    <div class="container">
+        <div class="hero-content fade-up">
+            <div class="hero-tag"><span class="tag-text">🪻SMK STUDENT</span></div>
+            <h1 class="hero-title"><span class="title-line">Building Creative</span><span class="title-line gradient-text">Digital Project</span><span class="title-line">As A Student</span></h1>
+            <p class="hero-desc">Hello, I am Hamiidah, a student at SMK Al-Hadiid 1 Cileungsi majoring in Computer and Network Engineering. This is my first portfolio website in 10th grade.</p>
+            <div class="hero-buttons"><a href="#Project" class="btn-primary">View Project <i class="fas fa-arrow-right"></i></a><a href="#contact" class="btn-secondary">Let's Talk <i class="fas fa-comment"></i></a></div>
+            <div class="hero-stats"><div class="stat"><span class="stat-number">17</span><span class="stat-label">Years</span></div><div class="stat"><span class="stat-number">5+</span><span class="stat-label">Projects</span></div><div class="stat"><span class="stat-number">5+</span><span class="stat-label">Experiences</span></div></div>
         </div>
-    </nav>
+        <div class="hero-visual fade-up"><div class="hero-avatar"><div class="avatar-glow"></div><img src="img/ungu.jpg" alt="hamii"></div></div>
+    </div>
+    <div class="scroll-indicator"><span>Scroll</span><i class="fas fa-chevron-down"></i></div>
+</section>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-bg-gradient"></div>
-        <div class="container">
-            <div class="hero-content fade-up">
-                <div class="hero-tag">
-                    <span class="tag-text">🪻SMK STUDENT</span>
-                </div>
-                <h1 class="hero-title">
-                    <span class="title-line">Building Creative</span>
-                    <span class="title-line gradient-text">Digital Project</span>
-                    <span class="title-line">As A Student</span>
-                </h1>
-                <p class="hero-desc"> Hello, I am Hamiidah, a student at SMK Al-Hadiid 1 Cileungsi majoring in Computer and Network Engineering. This is my first portfolio website in 10th grade.</p>
-                <div class="hero-buttons">
-                    <a href="#Project" class="btn-primary">
-                        View Project
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="#contact" class="btn-secondary">
-                        Let's Talk
-                        <i class="fas fa-comment"></i>
-                    </a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">17</span>
-                        <span class="stat-label">Years</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">5+</span>
-                        <span class="stat-label">Projects</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">5+</span>
-                        <span class="stat-label">Experiences</span>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-visual fade-up">
-                <div class="floating-shape shape-1"></div>
-                <div class="floating-shape shape-2"></div>
-                <div class="floating-shape shape-3"></div>
-                <div class="hero-avatar">
-                    <div class="avatar-glow"></div>
-                    <img src="ungu.jpg" alt="hamii">
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <i class="fas fa-chevron-down"></i>
-        </div>
-    </section>
+<section id="about"><div class="container"><div class="section-header fade-up"><span class="section-subtitle">🪻About Me</span><h2 class="section-title">More Than Just <span class="gradient-text">Code</span></h2><div class="section-line"></div></div>
+<div class="about-grid"><div class="about-card fade-up"><div class="about-icon"><i class="fa-solid fa-briefcase"></i></div><h3>My dreams</h3><p>My dream is to become a lecturer, and to study, and to live in Mecca.</p></div>
+<div class="about-card fade-up"><div class="about-icon"><i class="fas fa-palette"></i></div><h3>My hobby</h3><p>My hobby is designing posters or anything digital, and coding, and going for walks in nature.</p></div>
+<div class="about-card fade-up"><div class="about-icon"><i class="fa-solid fa-location-dot"></i></div><h3>My address</h3><p>My address is in Bogor Regency, Cileungsi District, at Cibubur Mansion housing estate, block F7 number 5.</p></div></div>
+<div class="about-bio"><div class="bio-text"><p>I am Hamiidah, a student at Al-hadiid 1 Cileungsi vocational high school majoring in Computer and Network Engineering.</p><p>I was born in Blitar on December 1, 2009. I am currently a student and always eager to learn new experiences and develop myself.</p></div>
+<div class="bio-experience"><div class="exp-item"><div class="exp-year">2025 - Now</div><div class="exp-title">SMK AL-Hadiid 1 Cileungsi</div><div class="exp-company">Computer and Network Engineering.</div></div></div></div></div></section>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">🪻About Me</span>
-                <h2 class="section-title">More Than Just <span class="gradient-text">Code</span></h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="about-grid">
-                <div class="about-card fade-up">
-                    <div class="about-icon">
-                        <i class="fa-solid fa-briefcase"></i>
-                    </div>
-                    <h3>My dreams</h3>
-                    <p>My dream is to become a lecturer, and to study, and to live in Mecca.</p>
-                </div>
-                <div class="about-card fade-up">
-                    <div class="about-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h3>My hobby</h3>
-                    <p>My hobby is designing posters or anything digital, and coding, and going for walks in nature.</p>
-                </div>
-                <div class="about-card fade-up">
-                    <div class="about-icon">
-                        <i class="fa-solid fa-location-dot"></i>
-                    </div>
-                    <h3>My address</h3>
-                    <p>My address is in Bogor Regency, Cileungsi District, at Cibubur Mansion housing estate, block F7 number 5.</p>
-                </div>
-            </div>
-            <div class="about-bio">
-                <div class="bio-text fade-up">
-                    <p>I am Hamiidah, a student at Al-hadiid 1 Cileungsi vocational high school majoring in Computer and Network Engineering.</p>
-                    <p>I was born in Blitar on December 1, 2009. I am currently a student and always eager to learn new experiences and develop myself.</p>
-                    <p>I am a student interested in design, technology, and digital creativity. I enjoy creating visual designs, learning coding, and developing websites. I believe creativity and hard work can create useful and meaningful works.</p>
-                    <div class="bio-signature">
-                        <img src="https://cdn-icons-png.flaticon.com/512/1125/1125922.png" alt="signature">
-                    </div>
-                </div>
-                <div class="bio-experience fade-up">
-                    <div class="exp-item">
-                        <div class="exp-year">2025 - Now</div>
-                        <div class="exp-title">SMK AL-Hadiid 1 Cileungsi </div>
-                        <div class="exp-company">Computer and Network Engineering.</div>
-                    </div>
-                    <div class="exp-item">
-                        <div class="exp-year">2021 - 2025</div>
-                        <div class="exp-title">SMP Ponpes Darul Atsar</div>
-                        <div class="exp-company">Diniyyah and Arabic language.</div>
-                    </div>
-                    <div class="exp-item">
-                        <div class="exp-year">2016 - 2021</div>
-                        <div class="exp-title">SDIT AL-Qudwah</div>
-                        <div class="exp-company">Basic lessons</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="skills"><div class="container"><div class="section-header fade-up"><span class="section-subtitle">🪻Technical Expertise</span><h2 class="section-title">Tools & Technologies <span class="gradient-text">I Beginner</span></h2><div class="section-line"></div></div>
+<div class="skills-container"><div class="skill-category"><h3>Frontend</h3><div class="skills-grid"><div class="skill-item"><div class="skill-info"><span>Python</span><span>50%</span></div><div class="skill-bar"><div class="skill-progress" style="width:50%"></div></div></div>
+<div class="skill-item"><div class="skill-info"><span>HTML</span><span>50%</span></div><div class="skill-bar"><div class="skill-progress" style="width:50%"></div></div></div>
+<div class="skill-item"><div class="skill-info"><span>CSS</span><span>40%</span></div><div class="skill-bar"><div class="skill-progress" style="width:40%"></div></div></div></div></div>
+<div class="skill-category"><h3>Design & Tools</h3><div class="skills-grid"><div class="skill-item"><div class="skill-info"><span>Figma</span><span>80%</span></div><div class="skill-bar"><div class="skill-progress" style="width:80%"></div></div></div>
+<div class="skill-item"><div class="skill-info"><span>Canva</span><span>80%</span></div><div class="skill-bar"><div class="skill-progress" style="width:80%"></div></div></div></div></div></div></div></section>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">🪻Technical Expertise</span>
-                <h2 class="section-title">Tools & Technologies <span class="gradient-text">I Beginner</span></h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="skills-container">
-                <div class="skill-category fade-up">
-                    <h3>Frontend</h3>
-                    <div class="skills-grid">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Python</span>
-                                <span>50%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 50%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>HTML</span>
-                                <span>50%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 50%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Css</span>
-                                <span>40%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 40%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>C++</span>
-                                <span>35%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 35%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="skill-category fade-up">
-                    <h3>Design & Tools</h3>
-                    <div class="skills-grid">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Figma</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Canva</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Inkscape</span>
-                                <span>20%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 20%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="Project"><div class="container"><div class="section-header fade-up"><span class="section-subtitle">🪻Featured Projects</span><h2 class="section-title">Some of <span class="gradient-text">my project</span></h2><div class="section-line"></div></div>
+<div class="Project-grid"><div class="Project-item fade-up"><div class="Project-image"><img src="img/app.travel.jpeg" alt="project"><div class="Project-overlay"><a href="#" class="Project-link"><i class="fas fa-eye"></i></a></div></div><div class="Project-info"><h3>Design Figma App Travel</h3><p>School project with Figma</p></div></div>
+<div class="Project-item fade-up"><div class="Project-image"><img src="img/elearning.png" alt="project"><div class="Project-overlay"><a href="#" class="Project-link"><i class="fas fa-eye"></i></a></div></div><div class="Project-info"><h3>Design Figma App E-Learning</h3><p>E-learning app design</p></div></div></div></div></section>
 
-    <!-- Project Section -->
-    <section id="Project">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">🪻Featured Projects</span>
-                <h2 class="section-title">Some of <span class="gradient-text">my project</span></h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="Project-filters fade-up">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="Web Apps Design">Web Apps Design</button>
-                <button class="filter-btn" data-filter="Mobile Apps Design">Mobile Apps Design</button>
-                <button class="filter-btn" data-filter="Canva Design">Canva Design</button>
-                <button class="filter-btn" data-filter="Coding">Coding</button>
-            </div>
-            <div class="Project-grid">
-                <div class="Project-item fade-up" data-category="Mobile Apps Design">
-                    <div class="Project-image">
-                        <div class="Project-overlay">
-                            <div class="Project-links">
-                            <a href="#" class="Project-link view-project" data-project="Figma App Travel" data-link="app.travel.jpeg"></a>
-                            </div>
-                        </div>
-                        <div class="Project-overlay">
-                            <div class="card-image">
-                            <img src="app.travel.jpeg" alt="hamii">
-                        </div>
-                        </div>
-                        <div class="Project-placeholder">
-                            <i class="fas fa-globe"></i>
-                            
-                        </div>
-                    </div>
-                    <div class="Project-info">
-                        <h3>Design Figma App Travel</h3>
-                        <p>This is my project making a travel app with login and home pages using the Figma app</p>
-                        <div class="Project-tags">
-                            <span>School project</span>
-                            <span>Figma</span>
-                            <span>DDG UI UX</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="Project-item fade-up" data-category="Mobile Apps Design">
-                    <div class="Project-image">
-                        <div class="Project-overlay">
-                        <div class="Project-links">
-                            <a href="#" class="Project-link view-project" data-project="Figma App Travel" data-link="elearning.png"></a>
-                            </div>
-                        </div>
-                        <div class="Project-overlay">
-                            <div class="card-image">
-                            <img src="elearning.png" alt="hamii">
-                        </div>
-                        </div>
-                        <div class="Project-placeholder">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                    </div>
-                    <div class="Project-info">
-                        <h3>Design Figma App E-Learning</h3>
-                        <p>This is my project, which is making an e-learning app design that contains 4 pages</p>
-                        <div class="Project-tags">
-                            <span>School project</span>
-                            <span>Figma</span>
-                            <span>DDG UI UX</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="Project-item fade-up" data-category="Canva Design">
-                    <div class="Project-image">
-                         <div class="Project-overlay">
-                        <div class="Project-links">
-                                <a href="#" class="Project-link view-project" data-project="Canva Pizza Banner" data-link="pizza.png"></i></a>
-                        </div>
-                         </div>
-                        <div class="Project-overlay">
-                            <div class="card-image">
-                            <img src="pizza.png" alt="hamii">
-                        </div>
-                        </div>
-                        <div class="Project-placeholder">
-                            <i class="fa-solid fa-pizza-slice"></i>
-                        </div>
-                    </div>
-                    <div class="Project-info">
-                        <h3>Banner Iklan Pizza </h3>
-                        <p>This is one of my Canva projects, namely a food advertisement banner.</p>
-                        <div class="Project-tags">
-                            <span>School project</span>
-                            <span>Canva</span>
-                            <span>E-Commerce</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="Project-item fade-up" data-category="Canva Design">
-                    <div class="Project-image">
-                        <div class="Project-overlay">
-                        <div class="Project-links">
-                                <a href="#" class="Project-link view-project" data-project="Canva Pizza Banner" data-link="festival.jpg"></i></a>
-                        </div>
-                        </div>
-                        <div class="Project-overlay">
-                            <div class="card-image">
-                            <img src="festival.jpg" alt="hamii">
-                        </div>
-                        </div>
-                        <div class="Project-placeholder">
-                            <i class="fa-solid fa-masks-theater"></i>
-                    </div>
-                    </div>
-                    <div class="Project-info">
-                        <h3>Banner Festival </h3>
-                        <p>This is one of my Canva projects, namely a festival banner.</p>
-                        <div class="Project-tags">
-                            <span>School project</span>
-                            <span>Canva</span>
-                            <span>Banner</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="Project-item fade-up" data-category="Web Apps Design">
-                    <div class="Project-image">
-                        <div class="Project-overlay">
-                        <div class="Project-links">
-                                <a href="#" class="Project-link view-project" data-project="Figma Web E-Commerce" data-link="ecommerce.png"></i></a>
-                        </div>
-                        </div>
-                        <div class="Project-overlay">
-                            <div class="card-image">
-                            <img src="ecommerce.png" alt="hamii">
-                        </div>
-                        </div>
-                        <div class="Project-placeholder">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                    </div>
-                    <div class="Project-info">
-                        <h3>Design Figma Web E-Commerce</h3>
-                        <p>This is my project, which is to create an e-commerce web design consisting of 4 pages</p>
-                        <div class="Project-tags">
-                            <span>School project</span>
-                            <span>Figma</span>
-                            <span>DDG UI UX</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="Project-item fade-up" data-category="Web Apps Design">
-                    <div class="Project-image">
-                        <div class="Project-overlay">
-                        <div class="Project-links">
-                                <a href="#" class="Project-link view-project" data-project="Figma Web E-Commerce" data-link="perpus.png"><i class="fas fa-eye"></i></a>
-                        </div>
-                        </div>
-                        <div class="Project-overlay">
-                            <div class="card-image">
-                            <img src="perpus.png" alt="hamii">
-                        </div>
-                        </div>
-                        <div class="Project-placeholder">
-                            <i class="fa-solid fa-book-open"></i>
-                        </div>
-                    </div>
-                    <div class="Project-info">
-                        <h3>Design Figma Web Perpus</h3>
-                        <p>This is my project, which is to create an library web design consisting of 11 pages</p>
-                        <div class="Project-tags">
-                            <span>School project</span>
-                            <span>Figma</span>
-                            <span>DDG UI UX</span>
-                        </div>
-                    </div>
-                </div>
-            <div class="Project-item fade-up" data-category="Coding">
-                    <div class="Project-image">
-                        <div class="Project-overlay">
-                         <div class="Project-links">
-                                <a href="#" class="Project-link view-project" data-project="Responsive Analog Clock" data-link="jam.jpg"><i class="fas fa-eye"></i></a>
-                        </div>
-                        </div>
-                        <div class="Project-overlay">
-                            <div class="card-image">
-                            <img src="coding.jpg" alt="hamii">
-                        </div>
-                        </div>
-                        <div class="Project-placeholder">
-                            <i class="fa-solid fa-code"></i>
-                        </div>
-                    </div>
-                    <div class="Project-info">
-                        <h3>Responsive analog clock</h3>
-                        <p>This is my project, which is to create an library web design consisting of 11 pages</p>
-                        <div class="Project-tags">
-                            <span>School project</span>
-                            <span>Python</span>
-                            <span>PD</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="contact"><div class="container"><div class="section-header fade-up"><span class="section-subtitle">🪻Get In Touch</span><h2 class="section-title">Let's Project <span class="gradient-text">Together</span></h2><div class="section-line"></div></div>
+<div class="contact-container"><div class="contact-info"><div class="contact-card"><i class="fas fa-envelope"></i><h4>Email Me</h4><p>hamiidah.sch@gmail.com</p></div>
+<div class="contact-card"><i class="fas fa-phone-alt"></i><h4>Call Me</h4><p>+62 895 1645 6188</p></div></div>
+<form class="contact-form"><div class="form-group"><input type="text" placeholder="Your Name" required></div><div class="form-group"><input type="email" placeholder="Your Email" required></div><div class="form-group"><textarea rows="5" placeholder="Your Message"></textarea></div><button type="submit" class="btn-primary submit-btn">Send Message</button></form></div></div></section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <div class="section-header fade-up">
-                <span class="section-subtitle">🪻Get In Touch</span>
-                <h2 class="section-title">Let's Project <span class="gradient-text">Together</span></h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="contact-container">
-                <div class="contact-info fade-up">
-                    <div class="contact-card">
-                        <i class="fas fa-envelope"></i>
-                        <h4>Email Me</h4>
-                        <p>hamiidah.sch@gmail.com</p>
-                    </div>
-                    <div class="contact-card">
-                        <i class="fas fa-phone-alt"></i>
-                        <h4>Call Me</h4>
-                        <p>+62 895 1645 6188</p>
-                    </div>
-                    <div class="contact-card">
-                        <i class="fab fa-instagram"></i>
-                        <h4>Instagram</h4>
-                        <p>https://www.instagram.com/hami.idahhhhh/</p> 
-                    </div>
-                </div>
-                <form class="contact-form fade-up" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" rows="5" placeholder="Tell me about your Project..."></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary submit-btn">
-                        Send Message
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
+<footer class="footer"><div class="container"><div class="footer-content"><div class="footer-logo"><span class="logo-text">🌐 HAMIIDAH</span><p>A student majoring in TKJ at Al-hadiid.</p></div><div class="footer-copyright"><p>&copy; 2026 HAMIIDAH. All rights reserved.</p></div></div></div></footer>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span class="logo-text">🌐 HAMIIDAH</span>
-                    <p>A student majoring in TKJ at Al-hadiid.</p>
-                </div>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-dribbble"></i></a>
-                </div>
-                <div class="footer-copyright">
-                    <p>&copy; 2026 HAMIIDAH. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+<script>
+    // Loading
+    window.addEventListener('load', () => { setTimeout(() => { const loader = document.getElementById('loader'); if(loader) loader.classList.add('fade-out'); }, 1000); });
+    // Custom cursor
+    const cursor = document.querySelector('.cursor'), dot = document.querySelector('.cursor-dot');
+    document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px'; dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px'; });
+    // Navbar scroll
+    window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50); });
+    // Smooth scroll & active link
+    document.querySelectorAll('.nav-link').forEach(link => { link.addEventListener('click', function(e) { e.preventDefault(); const id = this.getAttribute('href').substring(1); document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active')); this.classList.add('active'); }); });
+    // Fade-up observer
+    const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    <script src="script.js"></script>
+    // ========== THEME TOGGLE (UNGU / BIRU) ==========
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const toggleText = document.querySelector('.toggle-text');
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'blue') {
+        body.classList.add('theme-blue');
+        if (toggleText) toggleText.textContent = 'Mode Ungu';
+    } else {
+        if (toggleText) toggleText.textContent = 'Mode Biru';
+    }
+    // Toggle event
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('theme-blue');
+            if (body.classList.contains('theme-blue')) {
+                localStorage.setItem('theme', 'blue');
+                if (toggleText) toggleText.textContent = 'Mode Ungu';
+            } else {
+                localStorage.setItem('theme', 'purple');
+                if (toggleText) toggleText.textContent = 'Mode Biru';
+            }
+        });
+    }
+    // Fix missing images alert
+    document.querySelectorAll('.Project-link').forEach(btn => { btn.addEventListener('click', (e) => { e.preventDefault(); alert('Demo link belum tersedia.'); }); });
+    document.querySelectorAll('.contact-form').forEach(form => { form.addEventListener('submit', (e) => { e.preventDefault(); alert('Pesan terkirim (demo).'); }); });
+</script>
 </body>
 </html>
