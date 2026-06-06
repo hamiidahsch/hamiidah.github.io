@@ -248,3 +248,33 @@ ProjectItems.forEach(item => {
 });
 
 console.log('Portfolio website loaded - Images and links are clickable!');
+
+// ========== FITUR TOGGLE TEMA (UNGU / BIRU) ==========
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+const toggleText = document.querySelector('.toggle-text');
+
+// Cek tema tersimpan di localStorage
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'blue') {
+    body.classList.add('theme-blue');
+    if (toggleText) toggleText.textContent = 'Mode Ungu';
+} else {
+    // default ungu
+    if (toggleText) toggleText.textContent = 'Mode Biru';
+}
+
+// Event klik tombol
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('theme-blue');
+        
+        if (body.classList.contains('theme-blue')) {
+            localStorage.setItem('theme', 'blue');
+            if (toggleText) toggleText.textContent = 'Mode Ungu';
+        } else {
+            localStorage.setItem('theme', 'purple');
+            if (toggleText) toggleText.textContent = 'Mode Biru';
+        }
+    });
+}
