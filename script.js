@@ -233,7 +233,7 @@ document.querySelectorAll('.contact-card').forEach(card => {
         if (emailCard) {
             window.location.href = 'mailto:hamiidah.sch@gmail.com';
         } else if (phoneCard) {
-            window.location.href = 'tel:+6289516456188';
+            window.open('https://wa.me/6289516456188/', '_blank');
         } else if (instaCard) {
             window.open('https://www.instagram.com/hami.idahhhhh/', '_blank');
         }
